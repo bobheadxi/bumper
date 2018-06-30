@@ -12,7 +12,6 @@ WORKDIR /app
 ENV SRC_DIR=/go/src/github.com/ubclaunchpad/bumper/server
 RUN apk add --update --no-cache git
 ADD server $SRC_DIR
-ADD server/service-account.json .
 WORKDIR $SRC_DIR
 RUN go get -u github.com/golang/dep/cmd/dep
 RUN dep ensure --vendor-only
@@ -24,7 +23,6 @@ RUN apk add --update --no-cache ca-certificates
 WORKDIR /app/build
 COPY --from=client /client/public/ .
 WORKDIR /app
-COPY --from=server /app/service-account.json .
 COPY --from=server /app/server .
 
 ENV PORT 9090
